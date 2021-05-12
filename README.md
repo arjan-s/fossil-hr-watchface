@@ -1,2 +1,42 @@
 # fossil-hr-watchface
-Watchface code intended to be used by Gadgetbridge
+
+## Introduction
+The Fossil Hybrid HR watches have dynamic watchfaces since firmware version DN1.0.2.20r.v1 (app 4.6.0). These watchfaces are built in [JerryScript 2.1.0](https://jerryscript.net/) and packed together with assets and configuration into one file. [Gadgetbridge](http://gadgetbridge.org/) does not have support for these dynamic watchfaces, which means it's not possible to set/modify watchfaces and complications on modern firmwares.
+
+Gadgetbridge does have the ability to upload the watchface/watchapp files to the watch, but due to licensing of Fossil's code, they cannot be redistributed. Hence the need for this open source watchface. A future version of Gadgetbridge can support dynamic watchfaces as long as they are built from fully open source code.
+
+**Note:** self-built watchfaces are only supported by Gadgetbridge, not by the official Fossil app.
+
+## Credits
+Daniel Dakhno, for his [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), which has provided tools and information necessary to analyze and build watchfaces.
+
+## Building the watchface
+First make sure you have the binaries `jerryscript` and `jerryscript-snapshot` available, version 2.1.0 (other versions will **not** work). Also, clone the [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), because the `pack.py` tool is needed.
+
+Then, run the following commands in the checked out repository:
+
+    mkdir -p build/files/{display_name,code,config,icons,layout}
+    jerry-snapshot generate -f '' open_source_watchface.js -o open_source_watchface.compiled
+    cp open_source_watchface.compiled build/files/code/openSourceWatchface
+    python ../Fossil-HR-SDK/tools/pack.py -i build -o "open_source_watchface.wapp"
+
+## Installing the watchface
+1. Open Gadgetbridge
+2. Tap on the "device specific settings" or "app manager" icon in the connected Fossil HR device card
+3. Tap on "file management"
+4. Tap on "upload file"
+5. Select the .wapp file
+6. Enjoy the watchface on your watch!
+
+## Current state
+- [x] Background image shows correctly
+- [x] Hands display correct time
+- [x] Display refresh works after leaving menu or notification
+- [ ] Notification indicator 
+- [ ] Physical buttons functionality
+- [ ] Wrist flick functionality
+- [ ] Configurability
+- [ ] Complications/widgets
+
+## Bonus
+Use `reversed_watchface.js` with background image `reversed_watchface.raw` for a fully reversed analog clock! Even the hands are running in reverse! No worries: notifications and menus still the same as they used to be.
