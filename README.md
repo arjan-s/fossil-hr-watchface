@@ -32,8 +32,9 @@ Then, run the following commands in the checked out repository:
 - [x] Background image shows correctly
 - [x] Hands display correct time
 - [x] Display refresh works after leaving menu or notification
-- [ ] Notification indicator 
-- [ ] Physical buttons functionality
+- [X] Notification indicator should disappear when dismissed on phone
+- [X] Physical buttons functionality
+- [ ] Partial display update
 - [ ] Wrist flick functionality
 - [ ] Configurability
 - [ ] Complications/widgets
