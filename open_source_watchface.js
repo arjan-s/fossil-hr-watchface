@@ -54,10 +54,22 @@ return {
         response.draw = {
             node_name: this.node_name,
             package_name: this.package_name,
-            background: 'background.raw',
+            layout_function: 'layout_parser_json',
+            background: undefined,
             update_type: redraw_type,
             skip_invert: true,
         };
+        for (var key in this.config.layout) {
+            var layout = this.config.layout[key];
+            if ((layout === undefined) || (is_empty_string(layout.name))) {
+                continue;
+            }
+            if (layout.type === 'image') {
+                if ((layout.size.w == 240) && (layout.size.h == 240)) {
+                    response.draw.background = layout.name;
+                }
+            }
+        }
     },
     handle_button_event: function(event, response) {
         for (var index in this.config.button_assignments) {
