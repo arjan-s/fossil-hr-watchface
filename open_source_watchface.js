@@ -1,16 +1,20 @@
 return {
     node_name: '',
     manifest: {
-        timers: ['update_du4', 'update_gc4']
+        timers: ['update_partial', 'update_full']
     },
     config: {},
     init: function() {},
     deinit: undefined,
+    timeout_partial_display_update: 15 * 60 * 1000,
+    timeout_full_display_update: 60 * 60 * 1000,
     handler: function(event, response) {
         if (event.is_button_event) {
+            // Handle physical button presses
             this.handle_button_event(event, response);
         }
         if (event.type === 'ui_boot_up_done') {
+            // Called once when the watchface app is started
             response.action = {
                 type: 'go_visible',
                 class: 'home',
@@ -23,22 +27,26 @@ return {
                 m: hands.minute_pos,
                 is_relative: false,
             };
-            start_timer(this.node_name, 'update_du4', 15 * 60 * 1000);
-            start_timer(this.node_name, 'update_gc4', 60 * 60 * 1000);
+            start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
+            start_timer(this.node_name, 'update_full', this.timeout_full_display_update);
         } else if (event.type === 'time_telling_update') {
+            // Called every 20 seconds, i.e. every time the hands need to move
             var hands = enable_time_telling();
             response.move = {
                 h: hands.hour_pos,
                 m: hands.minute_pos,
                 is_relative: false,
             };
-        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_du4'))) {
+        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_partial'))) {
+            // Timer for partial display updates expired
             this.draw(response, 'du4');
-            start_timer(this.node_name, 'update_du4', 15 * 60 * 1000);
-        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_gc4'))) {
+            start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
+        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_full'))) {
+            // Timer for full display updates expired
             this.draw(response, 'gc4');
-            start_timer(this.node_name, 'update_gc4', 60 * 60 * 1000);
+            start_timer(this.node_name, 'update_full', this.timeout_full_display_update);
         } else if (event.type === 'display_data_updated') {
+            // Something on the display needs to be updated
             this.draw(response, 'gc4');
         }
     },
@@ -59,7 +67,7 @@ return {
                     type: 'open_app',
                     node_name: config.name,
                     class: 'watch_app',
-                }
+                };
             }
         }
     },

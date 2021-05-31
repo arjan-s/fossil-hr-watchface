@@ -21,23 +21,35 @@ Then, run the following commands in the checked out repository:
     python ../Fossil-HR-SDK/tools/pack.py -i build -o "open_source_watchface.wapp"
 
 ## Installing the watchface
+**Option 1:**
 1. Open Gadgetbridge
-2. Tap on the "device specific settings" or "app manager" icon in the connected Fossil HR device card
-3. Tap on "file management"
-4. Tap on "upload file"
-5. Select the .wapp file
-6. Enjoy the watchface on your watch!
+2. Tap on the "app manager" icon in the connected Fossil HR device card
+3. Tap on the round "+" button at the bottom right
+4. Select the .wapp file
+5. Enjoy the watchface on your watch!
 
-## Current state
+**Option 2:**
+1. Share the .wapp file from another app with Gadgetbridge's "Firmware/Apps installer"
+2. Click "Install"
+3. Enjoy the watchface on your watch!
+
+## Current state and things left to do
 - [x] Background image shows correctly
 - [x] Hands display correct time
 - [x] Display refresh works after leaving menu or notification
 - [X] Notification indicator should disappear when dismissed on phone
 - [X] Physical buttons functionality
+- [ ] Layout JSON support
 - [ ] Partial display update
 - [ ] Wrist flick functionality
-- [ ] Configurability
 - [ ] Complications/widgets
+- [ ] Goal rings
+
+## Ideas for future exploration
+- [ ] Configurability through config JSON of regular and custom functionality
+- [ ] Timed backgrounds
+- [ ] Navigation instructions on watchface
+- [ ] Multiple configs (thus, watchfaces) switchable with physical button
 
 ## Bonus
-Use `reversed_watchface.js` with background image `reversed_watchface.raw` for a fully reversed analog clock! Even the hands are running in reverse! No worries: notifications and menus still the same as they used to be.
+Use `reversed_watchface.js` with background image `reversed_watchface.raw` for a fully reversed analog clock! Even the hands are running in reverse! No worries: notifications and menus are still displayed correctly.
