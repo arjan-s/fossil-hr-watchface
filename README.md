@@ -11,14 +11,18 @@ Gadgetbridge does have the ability to upload the watchface/watchapp files to the
 Daniel Dakhno, for his [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), which has provided tools and information necessary to analyze and build watchfaces.
 
 ## Building the watchface
-First make sure you have the binaries `jerryscript` and `jerryscript-snapshot` available, version 2.1.0 (other versions will **not** work). Also, clone the [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), because the `pack.py` tool is needed.
+First make sure you have the binaries `jerryscript` and `jerryscript-snapshot` available, version 2.1.0 (other versions will **not** work). Also, clone the [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), because some of the provided tools are needed.
+
+Pre-process your watchface with a tool like Gimp to 240x240 pixels and 2 bit (4 colors) grayscale. Then use the following command to convert your image to the RAW format used by watchfaces.
+
+    python ../Fossil-HR-SDK/tools/image_compress.py -i watchface.png -o build/files/icons/background.raw -w 240 -h 240 -f raw
 
 Then, run the following commands in the checked out repository:
 
     mkdir -p build/files/{display_name,code,config,icons,layout}
     jerry-snapshot generate -f '' open_source_watchface.js -o open_source_watchface.compiled
     cp open_source_watchface.compiled build/files/code/openSourceWatchface
-    python ../Fossil-HR-SDK/tools/pack.py -i build -o "open_source_watchface.wapp"
+    python ../Fossil-HR-SDK/tools/pack.py -i build -o open_source_watchface.wapp
 
 ## Installing the watchface
 **Option 1:**
