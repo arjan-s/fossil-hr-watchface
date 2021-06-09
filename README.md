@@ -43,16 +43,27 @@ Then, run the following commands in the checked out repository:
 - [x] Display refresh works after leaving menu or notification
 - [X] Notification indicator should disappear when dismissed on phone
 - [X] Physical buttons functionality
-- [ ] Layout JSON support
-- [ ] Partial display update
+- [X] Layout JSON support
+- [X] Partial display update
 - [ ] Wrist flick functionality
 - [ ] Complications/widgets
+    - [ ] Date / day of week
+    - [ ] Heart rate
+    - [ ] Weather
+    - [ ] 2nd timezone
+    - [ ] Steps count
+    - [ ] Battery
+    - [ ] Calories
+    - [ ] Chance of rain
+    - [ ] Custom widget (with text from Gadgetbridge)
 - [ ] Goal rings
+- [ ] Custom images
+- [ ] Custom text
 
 ## Ideas for future exploration
-- [ ] Configurability through config JSON of regular and custom functionality
+- [ ] Configurability of regular and custom functionality through config JSON
 - [ ] Timed backgrounds
-- [ ] Navigation instructions on watchface
+- [ ] Navigation instructions on watchface (from OsmAnd?)
 - [ ] Multiple configs (thus, watchfaces) switchable with physical button
 
 ## Bonus

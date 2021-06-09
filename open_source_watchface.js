@@ -4,11 +4,34 @@ return {
         timers: ['update_partial', 'update_full']
     },
     config: {},
-    init: function() {},
+    complications: {
+        draw: {}
+    },
+    installed_complications: [],
     deinit: undefined,
     timeout_partial_display_update: 15 * 60 * 1000,
     timeout_full_display_update: 60 * 60 * 1000,
+    full_refresh_needed: false,
+    init: function() {
+        for (var key in this.config.layout) {
+            var layout = this.config.layout[key];
+            if ((layout === undefined) || (is_empty_string(layout.name))) {
+                continue;
+            }
+            if (layout.type == 'comp') {
+                if (is_node_installed(layout.name)) {
+                    if (layout.pos != undefined) {
+                        layout.pos = this.calculate_position(layout.pos, layout.size);
+                    }
+                    var node_config = get_node_config(layout.name);
+                    this.installed_complications.push(layout.name);
+                    init_node(layout.name);
+                }
+            }
+        }
+    },
     handler: function(event, response) {
+        var redraw_needed = false;
         if (event.is_button_event) {
             // Handle physical button presses
             this.handle_button_event(event, response);
@@ -20,7 +43,13 @@ return {
                 class: 'home',
             };
         } else if (event.type === 'system_state_update') {
-            this.draw(response, 'gc4');
+            // Generic system state updates
+            this.update_complications({
+                type: 'watch_face_update',
+                reason: 'watch_face_visible',
+            });
+            redraw_needed = true;
+            this.full_refresh_needed = true;
             var hands = enable_time_telling();
             response.move = {
                 h: hands.hour_pos,
@@ -39,26 +68,38 @@ return {
             };
         } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_partial'))) {
             // Timer for partial display updates expired
-            this.draw(response, 'du4');
+            redraw_needed = this.update_complications({
+                type: 'display_data_updated',
+            });
             start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
         } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_full'))) {
             // Timer for full display updates expired
-            this.draw(response, 'gc4');
+            redraw_needed = true;
+            this.update_complications({
+                type: 'display_data_updated',
+            });
+            this.full_refresh_needed = true;
             start_timer(this.node_name, 'update_full', this.timeout_full_display_update);
-        } else if (event.type === 'display_data_updated') {
+        } else if ((event.type === 'display_data_updated') || (this.update_complications(event))) {
             // Something on the display needs to be updated
-            this.draw(response, 'gc4');
+            redraw_needed = true;
+        }
+        if (redraw_needed === true) {
+            this.draw(response);
         }
     },
-    draw: function(response, redraw_type) {
+    draw: function(response) {
         response.draw = {
             node_name: this.node_name,
             package_name: this.package_name,
             layout_function: 'layout_parser_json',
             background: undefined,
-            update_type: redraw_type,
+            array: [],
+            update_type: this.full_refresh_needed ? 'gc4' : 'du4',
             skip_invert: true,
         };
+        this.full_refresh_needed = false;
+        var counter = 0;
         for (var key in this.config.layout) {
             var layout = this.config.layout[key];
             if ((layout === undefined) || (is_empty_string(layout.name))) {
@@ -69,7 +110,38 @@ return {
                     response.draw.background = layout.name;
                 }
             }
+            if (layout.type === 'comp') {
+                if (typeof(this.complications.draw[layout.name]) !== 'object' ) {
+                    continue;
+                }
+                response.draw.array[counter] = {
+                    size: layout.size,
+                    pos: layout.pos,
+                    background: layout.bg,
+                    $e: layout.color == 'black',
+                };
+                deep_fill(response.draw.array[counter], this.complications.draw[layout.name]);
+                counter++;
+            }
         }
+    },
+    update_complications: function(why) {
+        var need_update = {};
+        var result = false;
+        forward_input(why, this.installed_complications, need_update);
+        if (get_common().U('DIAL_INFO') === 'ON') {
+            for (var index in need_update) {
+                if (typeof(need_update[index].draw) === 'object') {
+                    result = true;
+                    for (var index2 in need_update[index].draw) {
+                        this.complications.draw[index2] = need_update[index].draw[index2];
+                    }
+                }
+            }
+        } else {
+            this.complications.draw = {};
+        }
+        return result;
     },
     handle_button_event: function(event, response) {
         for (var index in this.config.button_assignments) {
@@ -82,5 +154,11 @@ return {
                 };
             }
         }
+    },
+    calculate_position: function(pos, size) {
+        return {
+            Ue: Math.floor(pos.x - size.w / 2),
+            Qe: Math.floor(pos.y - size.h / 2),
+        };
     },
 };
