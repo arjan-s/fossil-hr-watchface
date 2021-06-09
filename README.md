@@ -45,7 +45,7 @@ Then, run the following commands in the checked out repository:
 - [X] Physical buttons functionality
 - [X] Layout JSON support
 - [X] Partial display update
-- [ ] Wrist flick functionality
+- [X] Wrist flick functionality
 - [ ] Complications/widgets
     - [ ] Date / day of week
     - [ ] Heart rate

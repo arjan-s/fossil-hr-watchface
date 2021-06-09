@@ -1,7 +1,7 @@
 return {
     node_name: '',
     manifest: {
-        timers: ['update_partial', 'update_full']
+        timers: ['update_partial', 'update_full', 'hands', 'flick_away']
     },
     config: {},
     complications: {
@@ -12,6 +12,9 @@ return {
     timeout_partial_display_update: 15 * 60 * 1000,
     timeout_full_display_update: 60 * 60 * 1000,
     full_refresh_needed: false,
+    time_telling_enabled: true,
+    wrist_flick_display_timeout: 5000,
+    wrist_flick_hands_timeout: 3000,
     init: function() {
         for (var key in this.config.layout) {
             var layout = this.config.layout[key];
@@ -66,6 +69,7 @@ return {
                 m: hands.minute_pos,
                 is_relative: false,
             };
+            this.time_telling_enabled = true;
         } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_partial'))) {
             // Timer for partial display updates expired
             redraw_needed = this.update_complications({
@@ -80,6 +84,34 @@ return {
             });
             this.full_refresh_needed = true;
             start_timer(this.node_name, 'update_full', this.timeout_full_display_update);
+        } else if (event.type === 'flick_away') {
+            // Called when the user flicks the wrist
+            this.update_complications({
+                type: 'display_data_updated',
+                reason: 'flick_away',
+            });
+            redraw_needed = true;
+            start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
+            start_timer(this.node_name, 'flick_away', this.wrist_flick_display_timeout);
+            if (this.time_telling_enabled) {
+                disable_time_telling();
+                start_timer(this.node_name, 'hands', this.wrist_flick_hands_timeout);
+                response.move = {
+                    h: 360,
+                    m: -360,
+                    is_relative: true,
+                };
+                this.time_telling_enabled = false;
+            }
+        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'hands'))) {
+            // Timer for time telling expired
+            var hands = enable_time_telling();
+            response.move = {
+                h: hands.hour_pos,
+                m: hands.minute_pos,
+                is_relative: false,
+            };
+            this.time_telling_enabled = true;
         } else if ((event.type === 'display_data_updated') || (this.update_complications(event))) {
             // Something on the display needs to be updated
             redraw_needed = true;
