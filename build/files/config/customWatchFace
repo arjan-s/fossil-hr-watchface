@@ -1,1 +1,1 @@
-{"layout":[{"size":{"w":240,"h":240},"pos":{"x":120,"y":120},"type":"image","name":"background.raw"}]}
+{"layout":[{"size":{"w":240,"h":240},"pos":{"x":120,"y":120},"type":"image","name":"background.raw"},{"size":{"w":76,"h":76},"pos":{"x":120,"y":70},"type":"comp","name":"widgetDate","goal_ring":false,"color":"white","bg":"_00.rle"},{"size":{"w":76,"h":76},"pos":{"x":120,"y":175},"type":"comp","name":"widgetWeather","goal_ring":false,"color":"white","bg":"_01.rle"}]}

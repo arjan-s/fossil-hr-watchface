@@ -8,7 +8,8 @@ Gadgetbridge does have the ability to upload the watchface/watchapp files to the
 **Note:** self-built watchfaces are only supported by Gadgetbridge, not by the official Fossil app.
 
 ## Credits
-Daniel Dakhno, for his [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), which has provided tools and information necessary to analyze and build watchfaces.
+- Daniel Dakhno, for his [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), which has provided tools and information necessary to analyze and build watchfaces.
+- [Material Design Icons](https://materialdesignicons.com/) for providing an awesome repository of free icons.
 
 ## Building the watchface
 First make sure you have the binaries `jerryscript` and `jerryscript-snapshot` available, version 2.1.0 (other versions will **not** work). Also, clone the [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), because some of the provided tools are needed.
@@ -17,15 +18,21 @@ Pre-process your watchface with a tool like Gimp to 240x240 pixels and 2 bit (4 
 
     python ../Fossil-HR-SDK/tools/image_compress.py -i watchface.png -o build/files/icons/background.raw -w 240 -h 240 -f raw
 
+The same tool can be used to convert icons to the watch's format. Make sure you start with a **white** icon with transparent background. Then use the following command to convert your icon to the RLE format used by watchfaces.
+
+    python ../Fossil-HR-SDK/tools/image_compress.py -i icon.png -o build/files/icons/icon.rle -w 24 -h 24 -f rle
+
 Then, run the following commands in the checked out repository:
 
-    mkdir -p build/files/{display_name,code,config,icons,layout}
-    jerry-snapshot generate -f '' open_source_watchface.js -o open_source_watchface.compiled
-    cp open_source_watchface.compiled build/files/code/openSourceWatchface
+    mkdir -p build/files/code/
+    jerry-snapshot generate -f '' open_source_watchface.js -o build/files/code/openSourceWatchface
+    jerry-snapshot generate -f '' widget_date.js -o build/files/code/widgetDate
+    jerry-snapshot generate -f '' widget_weather.js -o build/files/code/widgetWeather
     python ../Fossil-HR-SDK/tools/pack.py -i build -o open_source_watchface.wapp
 
 ## Installing the watchface
 **Option 1:**
+
 1. Open Gadgetbridge
 2. Tap on the "app manager" icon in the connected Fossil HR device card
 3. Tap on the round "+" button at the bottom right
@@ -33,6 +40,7 @@ Then, run the following commands in the checked out repository:
 5. Enjoy the watchface on your watch!
 
 **Option 2:**
+
 1. Share the .wapp file from another app with Gadgetbridge's "Firmware/Apps installer"
 2. Click "Install"
 3. Enjoy the watchface on your watch!
@@ -47,9 +55,9 @@ Then, run the following commands in the checked out repository:
 - [X] Partial display update
 - [X] Wrist flick functionality
 - [ ] Complications/widgets
-    - [ ] Date / day of week
+    - [X] Date / day of week
+    - [X] Weather
     - [ ] Heart rate
-    - [ ] Weather
     - [ ] 2nd timezone
     - [ ] Steps count
     - [ ] Battery
@@ -65,6 +73,7 @@ Then, run the following commands in the checked out repository:
 - [ ] Timed backgrounds
 - [ ] Navigation instructions on watchface (from OsmAnd?)
 - [ ] Multiple configs (thus, watchfaces) switchable with physical button
+- [ ] Suspend hands and display updating when off wrist to conserve battery power
 
 ## Bonus
 Use `reversed_watchface.js` with background image `reversed_watchface.raw` for a fully reversed analog clock! Even the hands are running in reverse! No worries: notifications and menus are still displayed correctly.
