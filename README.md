@@ -28,6 +28,8 @@ Then, run the following commands in the checked out repository:
     jerry-snapshot generate -f '' open_source_watchface.js -o build/files/code/openSourceWatchface
     jerry-snapshot generate -f '' widget_date.js -o build/files/code/widgetDate
     jerry-snapshot generate -f '' widget_weather.js -o build/files/code/widgetWeather
+    jerry-snapshot generate -f '' widget_steps.js -o build/files/code/widgetSteps
+    jerry-snapshot generate -f '' widget_hr.js -o build/files/code/widgetHR
     python ../Fossil-HR-SDK/tools/pack.py -i build -o open_source_watchface.wapp
 
 ## Installing the watchface
@@ -57,9 +59,9 @@ Then, run the following commands in the checked out repository:
 - [ ] Complications/widgets
     - [X] Date / day of week
     - [X] Weather
-    - [ ] Heart rate
+    - [X] Heart rate
+    - [X] Steps count
     - [ ] 2nd timezone
-    - [ ] Steps count
     - [ ] Battery
     - [ ] Calories
     - [ ] Chance of rain
