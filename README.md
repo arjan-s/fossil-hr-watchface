@@ -56,6 +56,7 @@ Then, run the following commands in the checked out repository:
 - [X] Layout JSON support
 - [X] Partial display update
 - [X] Wrist flick functionality
+- [X] Configurability of regular and custom functionality through config JSON
 - [ ] Complications/widgets
     - [X] Date / day of week
     - [X] Weather
@@ -71,7 +72,6 @@ Then, run the following commands in the checked out repository:
 - [ ] Custom text
 
 ## Ideas for future exploration
-- [ ] Configurability of regular and custom functionality through config JSON
 - [ ] Timed backgrounds
 - [ ] Navigation instructions on watchface (from OsmAnd?)
 - [ ] Multiple configs (thus, watchfaces) switchable with physical button

@@ -14,7 +14,10 @@ return {
     full_refresh_needed: false,
     time_telling_enabled: true,
     wrist_flick_display_timeout: 5000,
-    wrist_flick_hands_timeout: 3000,
+    wrist_flick_hands_timeout: 2200,
+    wrist_flick_hands_relative: true,
+    wrist_flick_move_hour: 360,
+    wrist_flick_move_minute: -360,
     init: function() {
         for (var key in this.config.layout) {
             var layout = this.config.layout[key];
@@ -29,6 +32,43 @@ return {
                     var node_config = get_node_config(layout.name);
                     this.installed_complications.push(layout.name);
                     init_node(layout.name);
+                }
+            }
+        }
+        if (this.config.config != undefined) {
+            for (var key in this.config.config) {
+                var value = this.config.config[key];
+                switch (key) {
+                    case "timeout_display_partial":
+                        if (typeof value === 'number') {
+                            this.timeout_partial_display_update = value;
+                        }
+                        break;
+                    case "timeout_display_full":
+                        if (typeof value === 'number') {
+                            this.timeout_full_display_update = value;
+                        }
+                        break;
+                    case "wrist_flick_hands_relative":
+                        if (typeof value === "boolean") {
+                            this.wrist_flick_hands_relative = value;
+                        }
+                        break;
+                    case "wrist_flick_move_hour":
+                        if (typeof value === 'number') {
+                            this.wrist_flick_move_hour = value;
+                        }
+                        break;
+                    case "wrist_flick_move_minute":
+                        if (typeof value === 'number') {
+                            this.wrist_flick_move_minute = value;
+                        }
+                        break;
+                    case "wrist_flick_duration":
+                        if (typeof value === 'number') {
+                            this.wrist_flick_hands_timeout = value;
+                        }
+                        break;
                 }
             }
         }
@@ -97,9 +137,9 @@ return {
                 disable_time_telling();
                 start_timer(this.node_name, 'hands', this.wrist_flick_hands_timeout);
                 response.move = {
-                    h: 360,
-                    m: -360,
-                    is_relative: true,
+                    h: this.wrist_flick_move_hour,
+                    m: this.wrist_flick_move_minute,
+                    is_relative: this.wrist_flick_hands_relative,
                 };
                 this.time_telling_enabled = false;
             }
