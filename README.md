@@ -32,6 +32,9 @@ Then, run the following commands in the checked out repository:
     jerry-snapshot generate -f '' widget_hr.js -o build/files/code/widgetHR
     jerry-snapshot generate -f '' widget_battery.js -o build/files/code/widgetBattery
     jerry-snapshot generate -f '' widget_calories.js -o build/files/code/widgetCalories
+    jerry-snapshot generate -f '' widget_2nd_tz.js -o build/files/code/widget2ndTZ
+    jerry-snapshot generate -f '' widget_activemins.js -o build/files/code/widgetActiveMins
+    jerry-snapshot generate -f '' widget_chanceofrain.js -o build/files/code/widgetChanceOfRain
     python ../Fossil-HR-SDK/tools/pack.py -i build -o open_source_watchface.wapp
 
 ## Installing the watchface
@@ -66,8 +69,9 @@ Then, run the following commands in the checked out repository:
     - [X] Steps count
     - [X] Battery
     - [X] Calories
-    - [ ] 2nd timezone
-    - [ ] Chance of rain
+    - [X] Active minutes
+    - [X] 2nd timezone
+    - [X] Chance of rain
     - [ ] Custom widget (with text from Gadgetbridge)
 - [ ] Goal rings
 - [ ] Custom images
