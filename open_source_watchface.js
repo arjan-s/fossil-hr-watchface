@@ -30,6 +30,12 @@ return {
                         layout.pos = this.calculate_position(layout.pos, layout.size);
                     }
                     var node_config = get_node_config(layout.name);
+                    if (layout.data != undefined) {
+                        node_config.data = layout.data;
+                    }
+                    if (layout.goal_ring != undefined) {
+                        node_config.goal_ring = layout.goal_ring;
+                    }
                     this.installed_complications.push(layout.name);
                     init_node(layout.name);
                 }
