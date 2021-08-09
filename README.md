@@ -62,8 +62,8 @@ Then, run the following commands in the checked out repository:
 - [X] Partial display update
 - [X] Wrist flick functionality
 - [X] Configurability of regular and custom functionality through config JSON
-- [X] Goal rings
-- [ ] Complications/widgets
+- [X] Suspend hands and display updating when off wrist to conserve battery power
+- [X] Complications/widgets
     - [X] Date / day of week
     - [X] Weather
     - [X] Heart rate
@@ -74,6 +74,7 @@ Then, run the following commands in the checked out repository:
     - [X] 2nd timezone
     - [X] Chance of rain
     - [ ] Custom widget (with text from Gadgetbridge)
+- [ ] Goal rings
 - [ ] Custom images
 - [ ] Custom text
 
@@ -81,7 +82,6 @@ Then, run the following commands in the checked out repository:
 - [ ] Timed backgrounds
 - [ ] Navigation instructions on watchface (from OsmAnd?)
 - [ ] Multiple configs (thus, watchfaces) switchable with physical button
-- [ ] Suspend hands and display updating when off wrist to conserve battery power
 
 ## Bonus
 Use `reversed_watchface.js` with background image `reversed_watchface.raw` for a fully reversed analog clock! Even the hands are running in reverse! No worries: notifications and menus are still displayed correctly.

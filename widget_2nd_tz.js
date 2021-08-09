@@ -8,7 +8,7 @@ return {
     config: {
         data: undefined,
     },
-    output_text: undefined,
+    location_name: undefined,
     conf_tz_offset_mins: 0,
     current_tz_offset_mins: 0,
     current_hour: 0,
@@ -16,15 +16,15 @@ return {
     showing: 'offset',
     calculated_hour: 0,
     calculated_mins: 0,
-    time_timeout: 15000,
+    time_mode_timeout: 15000,
     diff_mins: 0,
     diff_hours: 0,
     init: function() {
-        this.output_text = '– –';
+        this.location_name = '– –';
         this.conf_tz_offset_mins = get_common().time_zone_local;
         if (typeof(this.config.data) === 'object') {
             if (!is_empty_string(this.config.data.loc)) {
-                this.output_text = this.config.data.loc;
+                this.location_name = this.config.data.loc;
             }
             if (is_valid_number(this.config.data.utc)) {
                 this.conf_tz_offset_mins = Math.floor(this.config.data.utc);
@@ -34,7 +34,7 @@ return {
     handler: function(event, response) {
         if ((event.type === 'watch_face_update') || (event.type === 'display_data_updated')) {
             this.showing = 'time';
-            start_timer(this.node_name, 'mode_switch', this.time_timeout);
+            start_timer(this.node_name, 'mode_switch', this.time_mode_timeout);
             this.update_time();
             this.draw(response);
         } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'mode_switch'))) {
@@ -77,7 +77,7 @@ return {
         response.draw[this.node_name] = {
             json_file: 'complication_layout',
             dt: undefined,
-            ci: this.output_text,
+            ci: this.location_name,
         };
         var to_draw = response.draw[this.node_name];
         if (this.showing == 'offset') {

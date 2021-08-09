@@ -12,6 +12,8 @@ return {
     timeout_partial_display_update: 15 * 60 * 1000,
     timeout_full_display_update: 60 * 60 * 1000,
     full_refresh_needed: false,
+    powersave_display: false,
+    powersave_hands: false,
     time_telling_enabled: true,
     wrist_flick_display_timeout: 5000,
     wrist_flick_hands_timeout: 2200,
@@ -32,9 +34,6 @@ return {
                     var node_config = get_node_config(layout.name);
                     if (layout.data != undefined) {
                         node_config.data = layout.data;
-                    }
-                    if (layout.goal_ring != undefined) {
-                        node_config.goal_ring = layout.goal_ring;
                     }
                     this.installed_complications.push(layout.name);
                     init_node(layout.name);
@@ -75,6 +74,16 @@ return {
                             this.wrist_flick_hands_timeout = value;
                         }
                         break;
+                    case "powersave_display":
+                        if (typeof value === "boolean") {
+                            this.powersave_display = value;
+                        }
+                        break;
+                    case "powersave_hands":
+                        if (typeof value === "boolean") {
+                            this.powersave_hands = value;
+                        }
+                        break;
                 }
             }
         }
@@ -107,7 +116,7 @@ return {
             };
             start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
             start_timer(this.node_name, 'update_full', this.timeout_full_display_update);
-        } else if (event.type === 'time_telling_update') {
+        } else if ((event.type === 'time_telling_update') && ((!this.powersave_hands) || (!get_common().device_offwrist))) {
             // Called every 20 seconds, i.e. every time the hands need to move
             var hands = enable_time_telling();
             response.move = {
@@ -116,13 +125,26 @@ return {
                 is_relative: false,
             };
             this.time_telling_enabled = true;
-        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_partial'))) {
+        } else if ((event.type == 'common_update') && (event.device_offwrist)) {
+            if (get_common().device_offwrist) {
+                disable_time_telling();
+                this.time_telling_enabled = false;
+            } else {
+                var hands = enable_time_telling();
+                response.move = {
+                    h: hands.hour_pos,
+                    m: hands.minute_pos,
+                    is_relative: false,
+                };
+                this.time_telling_enabled = true;
+            }
+        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_partial')) && ((!this.powersave_display) || (!get_common().device_offwrist))) {
             // Timer for partial display updates expired
             redraw_needed = this.update_complications({
                 type: 'display_data_updated',
             });
             start_timer(this.node_name, 'update_partial', this.timeout_partial_display_update);
-        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_full'))) {
+        } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'update_full')) && ((!this.powersave_display) || (!get_common().device_offwrist))) {
             // Timer for full display updates expired
             redraw_needed = true;
             this.update_complications({
@@ -150,7 +172,7 @@ return {
                 this.time_telling_enabled = false;
             }
         } else if ((event.type === 'timer_expired') && (is_this_timer_expired(event, this.node_name, 'hands'))) {
-            // Timer for time telling expired
+            // Timer for reenabling time telling after wrist flick expired
             var hands = enable_time_telling();
             response.move = {
                 h: hands.hour_pos,
@@ -158,7 +180,7 @@ return {
                 is_relative: false,
             };
             this.time_telling_enabled = true;
-        } else if ((event.type === 'display_data_updated') || (this.update_complications(event))) {
+        } else if (((event.type === 'display_data_updated') || (this.update_complications(event))) && ((!this.powersave_display) || (!get_common().device_offwrist))) {
             // Something on the display needs to be updated
             redraw_needed = true;
         }
