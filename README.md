@@ -1,11 +1,11 @@
 # fossil-hr-watchface
 
 ## Introduction
-The Fossil Hybrid HR watches have dynamic watchfaces since firmware version DN1.0.2.20r.v1 (app 4.6.0). These watchfaces are built in [JerryScript 2.1.0](https://jerryscript.net/) and packed together with assets and configuration into one file. [Gadgetbridge](http://gadgetbridge.org/) does not have support for these dynamic watchfaces, which means it's not possible to set/modify watchfaces and complications on modern firmwares.
+The Fossil Hybrid HR watches have dynamic (free-form) watchfaces since firmware version DN1.0.2.20r.v1 (official app 4.6.0). These watchfaces are built in [JerryScript 2.1.0](https://jerryscript.net/) and packed together with assets and configurations into one file.
 
-Gadgetbridge does have the ability to upload the watchface/watchapp files to the watch, but due to licensing of Fossil's code, they cannot be redistributed. Hence the need for this open source watchface. A future version of Gadgetbridge can support dynamic watchfaces as long as they are built from fully open source code.
+[Gadgetbridge](http://gadgetbridge.org/) (0.59.0 and up) uses the open source code from this repository to support these dynamic watchfaces. Due to licensing of Fossil's code, the official watchfaces cannot be redistributed. Hence the need for an open source watchface.
 
-**Note:** self-built watchfaces are only supported by Gadgetbridge, not by the official Fossil app.
+**Note:** this open source watchface is only supported by Gadgetbridge, not by the official Fossil app.
 
 ## Credits
 - Daniel Dakhno, for his [app SDK](https://github.com/dakhnod/Fossil-HR-SDK), which has provided tools and information necessary to analyze and build watchfaces.
