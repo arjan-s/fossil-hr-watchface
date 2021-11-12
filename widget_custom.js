@@ -1,17 +1,20 @@
 return {
     node_name: '',
     config: {
-        upper_text: '-',
-        lower_text: '-'
+        upper_text: 'Cust',
+        lower_text: 'wgt',
     },
     last_upper_text: '-',
     last_lower_text: '-',
+    init: function() {
+        this.config.lower_text += " " + this.node_name.slice(-1);
+    },
     handler: function(event, response) {
         if ((event.type === 'watch_face_update') || (event.type === 'display_data_updated')) {
-            this.draw(response)
+            this.draw(response);
         }
         if(event.type === 'node_config_update' && (this.config.upper_text != this.last_upper_text || this.config.lower_text != this.last_lower_text)){
-            this.draw(response)
+            this.draw(response);
         }
     },
     draw: function(response) {

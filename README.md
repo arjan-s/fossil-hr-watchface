@@ -35,6 +35,7 @@ Then, run the following commands in the checked out repository:
     jerry-snapshot generate -f '' widget_2nd_tz.js -o build/files/code/widget2ndTZ
     jerry-snapshot generate -f '' widget_activemins.js -o build/files/code/widgetActiveMins
     jerry-snapshot generate -f '' widget_chanceofrain.js -o build/files/code/widgetChanceOfRain
+    jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom
     python ../Fossil-HR-SDK/tools/pack.py -i build -o open_source_watchface.wapp
 
 ## Installing the watchface
@@ -73,14 +74,14 @@ Then, run the following commands in the checked out repository:
     - [X] Active minutes
     - [X] 2nd timezone
     - [X] Chance of rain
-    - [ ] Custom widget (with text from Gadgetbridge)
+    - [X] Custom widget (showing text from Gadgetbridge)
 - [ ] Goal rings
 - [ ] Custom images
 - [ ] Custom text
 
 ## Ideas for future exploration
 - [ ] Timed backgrounds
-- [ ] Navigation instructions on watchface (from OsmAnd?)
+- [ ] Navigation instructions on watchface or widget (from OsmAnd)
 - [ ] Multiple configs (thus, watchfaces) switchable with physical button
 
 ## Bonus

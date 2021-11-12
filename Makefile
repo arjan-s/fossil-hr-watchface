@@ -27,10 +27,7 @@ compile:
 	jerry-snapshot generate -f '' widget_2nd_tz.js -o build/files/code/widget2ndTZ
 	jerry-snapshot generate -f '' widget_activemins.js -o build/files/code/widgetActiveMins
 	jerry-snapshot generate -f '' widget_chanceofrain.js -o build/files/code/widgetChanceOfRain
-	jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom0
-	jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom1
-	jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom2
-	jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom3
+	jerry-snapshot generate -f '' widget_custom.js -o build/files/code/widgetCustom
 
 pack:
 	python3 ${tools_dir}tools/pack.py -i build/ -o ${package_path}
